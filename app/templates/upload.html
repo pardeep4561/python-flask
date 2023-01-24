@@ -1,0 +1,62 @@
+{% extends "base.html" %} {% block title %}Home{% endblock %} {% block content
+    %}
+    <style>
+        label {
+            display: block;
+            font: 1rem 'Fira Sans', sans-serif;
+        }
+
+        input,
+        label {
+            margin: .4rem 0;
+        }
+
+    </style>
+  
+    
+  <body class="container-fluid text-center">
+    <h1  style="color: green;"></h1> <b>{{ message }}</b></h1>
+    <form action="" method=post enctype=multipart/form-data>
+        <label for="video">Upload Running / Squatting Video:</label>
+
+        <input type="file"
+               id="video" name="video"
+               accept="video/*" required>
+      
+      <label for="height">Height of Athlete</label>
+      <input type="number" id="height" name="height"><br>
+
+      <div>
+        <div class="radio">
+            <p>Video Type</p>
+            <select name="vid_type" id="vid_type" required>
+              <option value="run">Run</option>
+              <option value="squat">Squat</option>
+            </select>
+  
+        </div>
+        <br>
+        <div class="radio">
+            <p>Frame</p>
+            <select name="frame" id="frame" required>
+              <option value="front">Front</option>
+              <option value="side">Side</option>
+              <option value="back">Back</option>
+            </select>
+  
+        </div>
+        <br>
+        <div class="radio" required>
+            <p>Left or Right (only applicable for side frames)</p>
+            <select name="side-direction" id="side-direction">
+              <option value="left">Facing left</option>
+              <option value="right">Facing right</option>
+            </select>
+        </div>
+      </div>
+      <input type=submit value=Upload onclick="this.form.submit(); this.disabled=true; this.innerText='Sending…'; ">
+        </form>
+  </body>
+  
+  </html>
+  {% endblock %}

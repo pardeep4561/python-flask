@@ -1,0 +1,7 @@
+*.png
+*.pyc
+*.csv
+*.zip
+*.mp4
+
+/virtual_env

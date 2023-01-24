@@ -1,0 +1,157 @@
+{% extends "base.html" %} {% block title %}Home{% endblock %} {% block content
+  %}
+  <style>
+    img {
+      width: 200px;
+      height: auto;
+      align-content: middle;
+    }
+  
+    .squat-radio {
+      display: inline-flex;
+      flex-direction: column-reverse;
+      align-items: center;
+    }
+
+    .radio {
+      position: relative;
+      display: inline-block;
+      padding-bottom: 15px;
+      padding-left: 10px;
+      padding-right: 10px;
+    }
+
+    .radio input[type="radio"] {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      margin: 0;
+      bottom: 0;
+    }
+  </style>
+
+  
+<body class="container text-center">
+  <h1>Upload score</h1>
+  <h2> {{ message }}</h2>
+  <!-- <h1> {{ metadata }}</h1> -->
+  <form method=post enctype=multipart/form-data >
+    <img id="displayImg" src="{{ url_for('static',filename=img_name) }}" alt="photo">
+    <br>
+    <table>
+      <tr>Image Name: </tr>
+      <tr>{{ img_name.split('/')[1] }}</tr>
+      <br>
+      {% for key, value in metadata.items() if key != 'filename' %}
+      <tr>{{ key }}: </tr>
+      <tr>{{ value }}</tr>
+      <br>
+      {% endfor %}
+    </table>
+
+    <label for="frame_angle">Score :</label>
+    {% if metadata.video_type == 'running' %}
+      <select name="score" id="score">
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+      </select>
+   {% elif metadata.video_type == 'squat' and metadata.frame == 'front' %}
+    <div class="radio-container">
+      <div class ="radio">
+        <input type="radio" id="very-left" name="score" value = '1' />
+        <label for="very-left">Feet Flatten</label>
+      </div>
+    <div class="radio">
+          <input type="radio" id="left" name="score" value = '2'/>
+          <label for="left">Feet Turn Out</label>
+
+    </div>
+    <div class="radio">
+          <input type="radio" id="neutral" name="score" value='3'/>
+          <label for="neutral">Anterior</label>
+
+    </div>
+    <div class="radio">
+          <input type="radio" id="right" name="score" value = '4'/>
+          <label for="right">Knees Move Inward</label>
+
+    </div>
+    <div class="radio">
+          <input type="radio" id="very-right" name="score" value='5'/>
+          <label for="very-right">Knees Move Outward</label>
+
+    </div>
+        </div>
+
+    {% elif metadata.video_type == 'squat' and metadata.frame == 'back' %}
+    <div class="radio-container">
+      <div class ="radio">
+        <input type="radio" id="very-left" name="score" value = '1' />
+        <label for="very-left">Feet Flatten</label>
+  
+      </div>
+
+    <div class="radio">
+          <input type="radio" id="left" name="score" value = '2'/>
+          <label for="left">Heels Rise Off Floor</label>
+
+    </div>
+    <div class="radio">
+          <input type="radio" id="neutral" name="score" value='3'/>
+          <label for="neutral">Posterior</label>
+
+    </div>
+    <div class="radio">
+          <input type="radio" id="right" name="score" value = '4'/>
+          <label for="right">Asymmetric Weight Shift</label>
+
+    </div>
+        </div>
+
+    {% elif metadata.video_type == 'squat' and metadata.frame == 'side' %}
+    <div class="radio-container">
+      <div class ="radio">
+        <input type="radio" id="very-left" name="score" value = '1' />
+        <label for="very-left">Low Back Arches</label>
+  
+      </div>
+
+    <div class="radio">
+          <input type="radio" id="left" name="score" value = '2'/>
+          <label for="left">Low Back Rounds</label>
+
+    </div>
+    <div class="radio">
+          <input type="radio" id="neutral" name="score" value='3'/>
+          <label for="neutral">Lateral</label>
+
+    </div>
+    <div class="radio">
+          <input type="radio" id="right" name="score" value = '4'/>
+          <label for="right">Excessive Forward Lean</label>
+
+    </div>
+    <div class="radio">
+          <input type="radio" id="very-right" name="score" value='5'/>
+          <label for="very-right">Arms Fall Forward</label>
+
+    </div>
+        </div>
+
+   {% endif %}
+   
+    <br><br>
+    <input type="hidden" value = "{{ img_name }}" name='img_name'>
+    <input type="hidden" value = "{{ metadata.video_type }}" name='video_type'>
+    <input type="hidden" value = "{{ metadata.frame }}" name='frame'>
+    <input type="hidden" value = "{{ metadata.side_direction }}" name='side_direction'>
+    <input type=submit value=Upload onclick="this.form.submit(); this.disabled=true; this.innerText='Sending…'; ">
+  </form>
+  <h2>{{ text }}</h2>
+</body>
+
+</html>
+{% endblock %}
