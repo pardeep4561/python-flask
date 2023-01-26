@@ -2,7 +2,7 @@ from functools import wraps
 from flask import request, jsonify
 from jwt import decode
 from .models import User
-
+from flask import current_app
 
 def token_required(f):
     @wraps(f)
@@ -17,14 +17,13 @@ def token_required(f):
 
         try:
             # decoding the payload to fetch the stored details
-            data = decode(token, "6fXDDDfMtWPPNUBDJDYnwH8Xouh66mi0OLBZTbus8cA")
-            print(data, 'hello')
-            # current_user = User.query.filter_by(id=data['id']).first()
+            data = decode(token, current_app.config['JWT_SECRET_KEY'],algorithms=['HS256'])
+            current_user = data['user']
         except:
             return jsonify({
-                'message': 'Token is invalid !!'
+                'message': 'Token is invalid or expired. !!'
             }), 401
         # returns the current logged in users contex to the routes
-        return f({'hhd'}, *args, **kwargs)
+        return f(current_user, *args, **kwargs)
 
     return decorated
